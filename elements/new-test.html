@@ -1,0 +1,86 @@
+<dom-module id="new-test">
+	<style>
+		:host {
+			display: block;
+		}
+
+		img {
+			transform: scale(8,8);
+		}
+	</style>
+
+	<template>
+		<div id='omega-container'></div>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'new-test',
+
+			properties: {
+				'stage': Object
+			},
+
+			attached: function () {
+				window.addEventListener('WebComponentsReady', (e) => {
+
+					// window['app'].route = 'test'
+
+					scale = 4
+
+					this.set('stage', new Konva.Stage({
+						container: this.$['omega-container']
+					}))
+
+					adebray.init(this.stage)
+
+					var test = (nbr, x, y) => {
+						adebray.load('images/assets/fighter/fighter' + nbr + '.png', (image) => {
+							image.x(x)
+							image.y(y)
+							adebray.add(image)
+							adebray.draw()
+						})
+
+						adebray.load('images/assets/fighter_armor/fighter' + nbr + '.png', (image, HTMLimage) => {
+							adebray.load( adebray.iter_image_data(HTMLimage, (x, y, r, g, b, a) => {
+
+								var scale = 1
+
+								if (HTMLimage.width % 2 == 0 && x < HTMLimage.width / 2) {
+									x = x + scale
+								}
+								if (HTMLimage.height % 2 == 0 && y < HTMLimage.height / 2) {
+									y = y + scale
+								}
+
+								var _x = Math.pow( Math.floor( (x - HTMLimage.width / 2) / scale) , 2)
+								var _y = Math.pow( Math.floor( (y - HTMLimage.height / 2) / scale) , 2)
+
+								var harmonizer = new Harmonizer()
+
+								var harmony = harmonizer.harmonize([128, 21, 21, 255], 'tetradic')
+
+								// return [r, g, b, a]
+								return [
+									one.color(harmony[2]).red() * r,
+									one.color(harmony[2]).green() * g,
+									one.color(harmony[2]).blue() * b,
+									Math.round( Math.cos((_x * _y)) ) * a]
+							}), (image, HTMLimage) => {
+								image.x(x)
+								image.y(y)
+								adebray.add(image)
+								adebray.draw()
+							} )
+						})
+					}
+
+					test(1, 0, 0)
+					test(2, 36, 0)
+					test(3, 36 * 2, 0)
+				})
+			}
+		});
+	</script>
+</dom-module>

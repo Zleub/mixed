@@ -1,0 +1,43 @@
+<dom-module id="index-section">
+	<style>
+		:host {
+			display: block;
+			margin: 21px;
+			max-width: 800px;
+		}
+	</style>
+
+	<template>
+		<content></content>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'index-section',
+
+			properties: {
+				'data-route': String
+			},
+
+			ready: function () {
+				this.listen(this.parentElement, 'iron-select', 'toogle')
+			},
+
+			toogle: function (e) {
+				if (e.target.selected != this['data-route'])
+				{
+					for (var i = 0; i < this.children.length; i++) {
+						if (this.children[i].set)
+							this.children[i].set('visible', false)
+					}
+				}
+				else {
+					for (var i = 0; i < this.children.length; i++) {
+						if (this.children[i].set)
+							this.children[i].set('visible', true)
+					}
+				}
+			}
+		});
+	</script>
+</dom-module>
