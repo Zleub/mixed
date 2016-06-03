@@ -55,6 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="libs/konva.min.js"></script>
+	<script src="libs/adebray.js"></script>
 
 	<!-- endbuild -->
 
@@ -70,7 +71,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		}
 
 		#container {
-			max-width: 800px;
 			margin: 8px;
 			padding: 16px;
 		}
@@ -102,7 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			<iron-pages attr-for-selected="data-route" selected="{{route}}">
 
 				<index-section data-route="home">
-					<new-test></new-test>
+					<new-test-head></new-test-head>
 				</index-section>
 
 			</iron-pages>
@@ -119,8 +119,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 	<!-- build:js scripts/app.js -->
 	<script src="scripts/app.js"></script>
-	<script src="scripts/new_test.js"></script>
-
 	<!-- endbuild-->
 </body>
 
