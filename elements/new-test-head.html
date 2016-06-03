@@ -1,0 +1,96 @@
+<dom-module id="new-test-head">
+	<style>
+		:host {
+			display: block;
+			max-width: 800px;
+		}
+
+		#head img {
+			width: 20%;
+			height: auto;
+			margin: 12px;
+
+			image-rendering: optimizeSpeed;
+			image-rendering: -moz-crisp-edges;
+			image-rendering: -webkit-optimize-contrast;
+			image-rendering: optimize-contrast;
+			image-rendering: pixelated;
+			-ms-interpolation-mode: nearest-neighbor;
+
+			border: 1px solid white;
+		}
+
+	</style>
+
+	<template>
+		<div id="head"></div>
+		<br>
+		<new-test id='container'></new-test>
+	</template>
+
+	<script>
+		Polymer({
+			is: 'new-test-head',
+
+			properties: {
+				'stage': Object,
+				'array': {
+					type: Array,
+					value: [ 1, 2, 3, 4 ]
+				}
+			},
+
+			attached: function () {
+				var sizes = [
+					[ 42, 42 ],
+				]
+				var fn = adebray.filters.generic
+
+				var scales = [ 0.5, 1, 2 ]
+
+				function getRandomArbitrary(min, max) {
+ 					 return Math.random() * (max - min) + min;
+				}
+
+				fn.forEach( (_, i) => {
+					var index = i
+					sizes.forEach( (size, i) => {
+							var text = document.createElement('div')
+							// text.innerText = w + ' x ' + h
+							Polymer.dom(this.$.head).appendChild(text)
+						scales.forEach( (scale) => {
+							var w = Math.floor(size[0] / scale), h = Math.floor(size[1] / scale)
+	
+	
+							var image = new Image(w, h)
+							var [img, _] = adebray.iter_image_data(image, fn[index](scale)(image) )
+
+							image.onload = ((image) => () => Polymer.dom(text).appendChild(image))(image)
+							image.src = img
+						})
+					})
+				})
+
+				// adebray.compose([
+				// 	[ '../images/assets/fighter_armor/fighter8.png', adebray.filters.cosA(1), adebray.filters.multiply ],
+				// 	'../images/assets/fighter/fighter8.png',
+				// 	adebray.filters.merge
+				// ], this.append.bind(this))
+			},
+
+			append: function (e) {
+				console.log('append')
+				if (!e.target) { return console.log('undefined append')}
+
+				Polymer.dom(this.$.containerA).appendChild(e.target)
+			},
+
+			log : function (e) {
+				// |  adebray.compose([
+				// |  	[ '../images/assets/fighter_armor/fighter8.png', adebray.filters.cosA (1) ],
+				// |  	e.target
+				// v  ])
+			}
+		});
+	</script>
+</dom-module>
